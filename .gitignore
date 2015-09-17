@@ -2,3 +2,4 @@
 *.pdf
 *.dot
 /data
+/target/
