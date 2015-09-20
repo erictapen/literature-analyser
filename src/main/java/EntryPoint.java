@@ -77,23 +77,24 @@ public class EntryPoint {
 	
 	private static void getTreeFromWords() {
 		root = new GraphNode(rootCaption);
-		Iterator<String> it = wordList.listIterator();
 		GraphNode cursor = root;
-		while(it.hasNext()) {
-			if(cursor.getCaption() == "." || cursor.getCaption() == rootCaption) {
+		int i=0;
+		for(String x : wordList) {
+			if(x == "." || x == rootCaption) {
 				cursor = root;
 			} else {
 				GraphNode child = null;
 				for(GraphNode y : cursor.getChildren()) {
-					if(y.getCaption() == it.toString()) child = y;
+					if(y.getCaption() == x) child = y;
 				}
 				if(child != null) {
 					cursor = child;
 				} else {
-					cursor.addChild(new GraphNode(it.toString(), cursor));
+					cursor.addChild(new GraphNode(x, cursor));
 				}
 			}
-			it.next();
+			i++;
+			System.out.println(i + "/" + wordList.size() + " " + x);
 		}
 	}
 
