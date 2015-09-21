@@ -82,18 +82,13 @@ public class EntryPoint {
 		GraphNode cursor = root;
 		int i=0;
 		for(String x : wordList) {
-			if(x == "." || x == rootCaption) {
-				cursor = root;
-			} else {
-				GraphNode child = null;
-				for(GraphNode y : cursor.getChildren()) {
-					if(y.getCaption() == x) child = y;
-				}
-				if(child != null) {
-					cursor = child;
-				} else {
-					cursor.addChild(new GraphNode(x, cursor));
-				}
+			if(x == rootCaption) cursor = root;
+			else if(x == ".") cursor = null;
+			else if(cursor.getChildren().contains(x)) cursor = cursor.getChildren().get(cursor.getChildren().indexOf(x));
+			else {
+				GraphNode child = new GraphNode(x, cursor);
+				cursor.addChild(child);
+				cursor = child;
 			}
 			i++;
 			System.out.println(i + "/" + wordList.size() + " " + x);
