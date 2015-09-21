@@ -26,7 +26,8 @@ public class EntryPoint {
 		}
 		getTreeFromWords();
 		System.out.println(wordList.size() + " words in memory.");
-		SortedGraph.exportFile(root, "data/test.dot");
+		SortedGraphExport.exportFile(root, "out/test.dot");
+		PlainExport.exportFile(wordList, "out/test.plain");
 
 	}
 	

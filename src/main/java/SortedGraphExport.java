@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author justin
  *
  */
-public class SortedGraph {
+public class SortedGraphExport {
 
 	/** Exports the graph! Every data, which is determined by now will be written into the file
 	 * @param root The rootNode where to start. Every other node with posx=0.0, posy=0.0 
