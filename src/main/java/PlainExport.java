@@ -9,7 +9,7 @@ public class PlainExport {
 	
 	public static void exportFile(ArrayList<String> wordList, String ofile) {
 		
-		System.out.println("Starting plain export of " + wordList.get(0) + " to " + ofile);
+		System.out.println("Starting plain export of " + " to " + ofile);
 		try{
 			FileWriter writer = new FileWriter(ofile);
 			

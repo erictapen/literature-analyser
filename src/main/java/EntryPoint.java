@@ -72,6 +72,7 @@ public class EntryPoint {
 				if(i < line.length()) i++;
 			}
 		}
+		while(words.remove("")){}
 		wordList.addAll(words);
 		System.out.println(words);
 	}
