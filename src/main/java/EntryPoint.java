@@ -39,6 +39,7 @@ public class EntryPoint {
 				getWordsFromLine(line);
 				i++;
 			}
+			System.out.println(i + " lines of text imported.");
 		}
 	}
 
