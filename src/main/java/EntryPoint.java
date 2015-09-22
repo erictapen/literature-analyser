@@ -98,6 +98,7 @@ public class EntryPoint {
 				cursor = newNode;
 			}
 		}
+		System.out.println("Simplifying tree.");
 		root.simplifyTree();
 		System.out.println("Tree builded. Root has " + root.getChildren().size() + " children.");
 	}

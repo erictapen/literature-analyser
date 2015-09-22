@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /** Node class for tree implementation.
@@ -54,22 +55,29 @@ public class GraphNode {
 	}
 
 	public void simplifyTree() {
-		ArrayList<GraphNode> known = new ArrayList<GraphNode>();
-		ArrayList<GraphNode> toRemove = new ArrayList<GraphNode>();
+		HashMap<String, GraphNode> known = new HashMap<String, GraphNode>();
 		GraphNode foundNode = null;
-		for(GraphNode x : this.children) {
-			foundNode = null;
-			for(GraphNode y : known) {
-				if(x.getCaption().equals(y.getCaption())) foundNode = y;
-			}
+		ArrayList<GraphNode> tempchildren = new ArrayList<GraphNode>();
+		tempchildren.addAll(this.getChildren());
+		for(GraphNode x : tempchildren) {
+			foundNode = known.get(x.getCaption());
 			if(foundNode!=null) {
+				System.out.println("foundNode");
 				foundNode.addChildren(x.getChildren());
-				toRemove.add(foundNode);
+				this.children.remove(x);
 			} else {
-				known.add(x);
+				known.put(x.getCaption(), x);
 			}
 		}
-		this.children.removeAll(toRemove);
-		for(GraphNode x : this.children) x.simplifyTree();
+		for(GraphNode x : this.children) {
+			x.simplifyTree();
+		}
 	}
+
+	@Override
+	public String toString() {
+		return "GraphNode [caption=" + caption + "]";
+	}
+	
+	
 }
