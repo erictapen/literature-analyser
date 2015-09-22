@@ -89,7 +89,7 @@ public class EntryPoint {
 			else if(x.equals(".")) record = false;
 			if(record) sentences.get(sentences.size()-1).add(x);
 		}
-		root = new GraphNode("0", rootCaption);
+		root = new GraphNode(rootCaption, rootCaption);
 		for(ArrayList<String> lx : sentences) {
 			GraphNode cursor = root;
 			for(int i=1; i<lx.size(); i++) {
