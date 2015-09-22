@@ -32,6 +32,9 @@ public class GraphNode {
 	}
 	
 	public void addChildren(ArrayList<GraphNode> children) {
+		for(GraphNode x : children) {
+			x.setParent(this);
+		}
 		this.children.addAll(children);
 	}
 	
@@ -52,6 +55,10 @@ public class GraphNode {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void setParent(GraphNode parent) {
+		this.parent = parent;
 	}
 
 	public void simplifyTree() {

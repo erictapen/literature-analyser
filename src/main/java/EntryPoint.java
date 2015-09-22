@@ -95,7 +95,7 @@ public class EntryPoint {
 		for(ArrayList<String> lx : sentences) {
 			GraphNode cursor = root;
 			for(int i=1; i<lx.size(); i++) {
-				GraphNode newNode = new GraphNode(String.valueOf(Math.random()).substring(2), lx.get(i), cursor);
+				GraphNode newNode = new GraphNode(String.valueOf(Math.random()).substring(2, 13), lx.get(i), cursor);
 				cursor.addChild(newNode);
 				cursor = newNode;
 			}
