@@ -78,21 +78,28 @@ public class EntryPoint {
 	}
 	
 	private static void getTreeFromWords() {
-		root = new GraphNode(rootCaption);
-		GraphNode cursor = root;
-		int i=0;
+		System.out.println("Building tree. WordList has " + wordList.size() + " entries.");
+		ArrayList<ArrayList<String>> sentences = new ArrayList<ArrayList<String>>();
+		boolean record = false;
 		for(String x : wordList) {
-			if(x == rootCaption) cursor = root;
-			else if(x == ".") cursor = null;
-			else if(cursor.getChildren().contains(x)) cursor = cursor.getChildren().get(cursor.getChildren().indexOf(x));
-			else {
-				GraphNode child = new GraphNode(x, cursor);
-				cursor.addChild(child);
-				cursor = child;
+			if(x.equals(rootCaption)) {
+				record = true;
+				sentences.add(new ArrayList<String>());
 			}
-			i++;
-			System.out.println(i + "/" + wordList.size() + " " + x);
+			else if(x.equals(".")) record = false;
+			if(record) sentences.get(sentences.size()-1).add(x);
 		}
+		root = new GraphNode("0", rootCaption);
+		for(ArrayList<String> lx : sentences) {
+			GraphNode cursor = root;
+			for(int i=1; i<lx.size(); i++) {
+				GraphNode newNode = new GraphNode(String.valueOf(Math.random()), lx.get(i), cursor);
+				cursor.addChild(newNode);
+				cursor = newNode;
+			}
+		}
+		root.simplifyTree();
+		System.out.println("Tree builded. Root has " + root.getChildren().size() + " children.");
 	}
 
 }

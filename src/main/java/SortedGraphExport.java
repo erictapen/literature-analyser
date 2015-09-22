@@ -18,8 +18,7 @@ public class SortedGraphExport {
 	 */
 	public static void exportFile(GraphNode root, String ofile) {
 		
-		System.out.println("Starting sorted DOT export of " + root.getCaption() + " to " + ofile 
-				+ ". Attributes will be NOT added.");
+		System.out.println("Starting sorted DOT export of " + root.getCaption() + " to " + ofile);
 		try{
 			FileWriter writer = new FileWriter(ofile);
 			
@@ -29,9 +28,12 @@ public class SortedGraphExport {
 			togo.addAll(root.getChildren());
 			while(!togo.isEmpty()) {
 				for(GraphNode x : togo) {
-					writer.append("\t" + x.getParent().getCaption());
-					writer.append(" <-- " + x.getCaption());
-					writer.append("\n");
+					String append = "\t%parentID [caption=\"%parentCaption\"] <-- %childID [caption=\"%childCaption\"]\n";
+					append = append.replaceAll("%parentID", x.getParent().getId());
+					append = append.replaceAll("%parentCaption", x.getParent().getCaption());
+					append = append.replaceAll("%childID", x.getId());
+					append = append.replaceAll("%childCaption", x.getCaption());
+					writer.append(append);
 					togo2.addAll(x.getChildren());
 				}
 				togo.clear();

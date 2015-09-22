@@ -6,21 +6,32 @@ import java.util.ArrayList;
  *
  */
 public class GraphNode {
+	private String id;
 	private String caption;
 	private GraphNode parent;
 	private ArrayList<GraphNode> children = new ArrayList<GraphNode>();
 	
-	public GraphNode(String caption) {
+	public GraphNode(String id, String caption) {
+		id = id.replaceAll("\\$", "");
+		caption = caption.replaceAll("\\$", "");
+		this.id = id;
 		this.caption = caption;
 	}
 	
-	public GraphNode(String caption, GraphNode parent) {
+	public GraphNode(String id, String caption, GraphNode parent) {
+		id = id.replaceAll("\\$", "");
+		caption = caption.replaceAll("\\$", "");
+		this.id = id;
 		this.caption = caption;
 		this.parent = parent;
 	}
 	
 	public void addChild(GraphNode child) {
 		this.children.add(child);
+	}
+	
+	public void addChildren(ArrayList<GraphNode> children) {
+		this.children.addAll(children);
 	}
 	
 	public String getCaption() {
@@ -33,8 +44,29 @@ public class GraphNode {
 	public ArrayList<GraphNode> getChildren() {
 		return children;
 	}
-	
-	
 
-	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void simplifyTree() {
+		ArrayList<GraphNode> known = new ArrayList<GraphNode>();
+		ArrayList<GraphNode> toRemove = new ArrayList<GraphNode>();
+		for(GraphNode x : this.children) {
+			GraphNode foundNode = null;
+			for(GraphNode y : known) {
+				if(x.caption==y.caption) foundNode = y;
+			}
+			if(foundNode!=null) {
+				foundNode.addChildren(x.getChildren());
+				toRemove.add(foundNode);
+			}
+		}
+		this.children.removeAll(toRemove);
+		for(GraphNode x : this.children) x.simplifyTree();
+	}
 }
