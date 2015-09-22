@@ -10,6 +10,7 @@ public class EntryPoint {
 	private static String rootCaption = "I";
 	
 	private static ArrayList<String> wordList = new ArrayList<String>();
+	private static ArrayList<ArrayList<String>> sentences;
 	private static GraphNode root;
 
 	public static void main(String[] args) {
@@ -28,6 +29,7 @@ public class EntryPoint {
 		System.out.println(wordList.size() + " words in memory.");
 		SortedGraphExport.exportFile(root, "out/test.dot");
 		PlainExport.exportFile(wordList, "out/test.plain");
+		SentenceExport.exportFile(sentences, "out/test.sen");
 
 	}
 	
@@ -79,7 +81,7 @@ public class EntryPoint {
 	
 	private static void getTreeFromWords() {
 		System.out.println("Building tree. WordList has " + wordList.size() + " entries.");
-		ArrayList<ArrayList<String>> sentences = new ArrayList<ArrayList<String>>();
+		sentences = new ArrayList<ArrayList<String>>();
 		boolean record = false;
 		for(String x : wordList) {
 			if(x.equals(rootCaption)) {
