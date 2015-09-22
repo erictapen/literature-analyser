@@ -56,8 +56,9 @@ public class GraphNode {
 	public void simplifyTree() {
 		ArrayList<GraphNode> known = new ArrayList<GraphNode>();
 		ArrayList<GraphNode> toRemove = new ArrayList<GraphNode>();
+		GraphNode foundNode = null;
 		for(GraphNode x : this.children) {
-			GraphNode foundNode = null;
+			foundNode = null;
 			for(GraphNode y : known) {
 				if(x.getCaption().equals(y.getCaption())) foundNode = y;
 			}
