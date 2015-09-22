@@ -59,11 +59,13 @@ public class GraphNode {
 		for(GraphNode x : this.children) {
 			GraphNode foundNode = null;
 			for(GraphNode y : known) {
-				if(x.caption.equals(y.caption)) foundNode = y;
+				if(x.getCaption().equals(y.getCaption())) foundNode = y;
 			}
 			if(foundNode!=null) {
 				foundNode.addChildren(x.getChildren());
 				toRemove.add(foundNode);
+			} else {
+				known.add(x);
 			}
 		}
 		this.children.removeAll(toRemove);
