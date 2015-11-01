@@ -14,6 +14,7 @@ public class EntryPoint {
 	private static GraphNode root;
 
 	public static void main(String[] args) {
+		rootCaption = args[1];
 		try {
 			importFile(args[0]);
 		} catch (FileNotFoundException e) {
