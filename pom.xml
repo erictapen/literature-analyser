@@ -39,4 +39,22 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>getopt</groupId>
+			<artifactId>java-getopt</artifactId>
+			<version>1.0.14</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>in-project</id>
+			<name>Getopt Repo</name>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>ignore</checksumPolicy>
+			</releases>
+			<url>file://${project.basedir}/repo</url>
+		</repository>
+	</repositories>
 </project>
