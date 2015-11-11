@@ -4,6 +4,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 
 public class EntryPoint {
 	
@@ -14,6 +20,18 @@ public class EntryPoint {
 	private static GraphNode root;
 
 	public static void main(String[] args) {
+		Options options = new Options();
+		addCommandLineOptions(options);
+		CommandLineParser parser = new DefaultParser();
+		Settings settings = null;
+		try {
+			CommandLine cmd = parser.parse( options, args);
+			settings = generateSettingsFromCmd(cmd);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
+		
 		rootCaption = args[1];
 		try {
 			importFile(args[0]);
@@ -33,7 +51,7 @@ public class EntryPoint {
 		SentenceExport.exportFile(sentences, "out/test.sen");
 
 	}
-	
+
 	public static void importFile(String infile) throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(infile))) {
 			String line;
@@ -104,6 +122,34 @@ public class EntryPoint {
 		System.out.println("Simplifying tree.");
 		root.simplifyTree();
 		System.out.println("Tree builded. Root has " + root.getChildren().size() + " children.");
+	}
+	
+	private static void addCommandLineOptions(Options options) {
+		options.addOption("i", "input-file", true, "the plain text to process");
+		options.addOption("o", "output-file", true, "output-file name. "
+				+ "File extension will be added automatically.");
+		options.addOption("r", "root", true, "this word and the following will be added into the tree.");
+		options.addOption("b", "root-starts-sentence", true, "only sentences starting with root will "
+				+ "be processed.");
+		options.addOption("w", "word-seperator", true, "the symbol, which seperates words. "
+				+ "Default is ' '.");
+		options.addOption("d", "export-dot", true, "export to *.dot format.");
+		options.addOption("p", "export-plain", true, "export to *.plain format. Only useful for debugging.");
+		options.addOption("s", "export-sentences", true, "export to *.sen format. "
+				+ "Lists every matching sentence.");
+		options.addOption("m", "force-punctuation-marks", true, "this will force punctuation marks like"
+				+ "'.',';','`' and ',' to be seperated words, regardless if they are surrounded by "
+				+ "word-seperators or not.");
+	}
+	
+	private static Settings generateSettingsFromCmd(CommandLine cmd) {
+		Settings res = new Settings();
+		String i = cmd.getOptionValue("i");
+		if(i!=null) res.setInputFile(i);
+		else System.out.println("Please ...")
+		//TODO abort and so on
+		
+		return null;
 	}
 
 }
