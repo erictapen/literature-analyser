@@ -19,8 +19,10 @@ public class EntryPoint {
 	private static ArrayList<ArrayList<String>> sentences;
 	private static GraphNode root;
 	private static Settings settings = null;
+	private static ArrayList<String> pmarks = new ArrayList<String>();
 
 	public static void main(String[] args) {
+		addPMarks();
 		Options options = new Options();
 		addCommandLineOptions(options);
 		CommandLineParser parser = new DefaultParser();
@@ -53,6 +55,19 @@ public class EntryPoint {
 			SentenceExport.exportFile(sentences, "out/" + settings.getOutputFile() + ".sentences");
 	}
 
+	private static void addPMarks() {
+		pmarks.add("'");
+		pmarks.add("’");
+		pmarks.add(".");
+		pmarks.add(",");
+		pmarks.add("“");
+		pmarks.add("”");
+		pmarks.add("[");
+		pmarks.add("]");
+		pmarks.add("(");
+		pmarks.add(")");		
+	}
+
 	public static void importFile(String infile) throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(infile))) {
 			String line;
@@ -66,21 +81,12 @@ public class EntryPoint {
 	}
 
 	private static void getWordsFromLine(String line) {
-		System.out.println(line.length());
+		if(settings.isVerbose()) System.out.println(line.length());
 		ArrayList<String> words = new ArrayList<String>();
 		String word = "";
 		int i=0;
 		while(i < line.length()) {
-			if(		line.startsWith(",", i) || 
-					line.startsWith("'", i) ||
-					line.startsWith("’", i) ||
-					line.startsWith(".", i) ||
-					line.startsWith("“", i) ||
-					line.startsWith("”", i) ||
-					line.startsWith("[", i) ||
-					line.startsWith("]", i) ||
-					line.startsWith("(", i) ||
-					line.startsWith(")", i) ) {
+			if(settings.isForcePunctuationMarks() && pmarks.contains(line.substring(i, i+1))) {
 				words.add(word);
 				word = "";
 				words.add(line.substring(i, i+1));
@@ -96,19 +102,24 @@ public class EntryPoint {
 		}
 		while(words.remove("")){}
 		wordList.addAll(words);
-		System.out.println(words);
+		if(settings.isVerbose()) System.out.println(words);
 	}
 	
 	private static void getTreeFromWords() {
 		System.out.println("Building tree. WordList has " + wordList.size() + " entries.");
 		sentences = new ArrayList<ArrayList<String>>();
 		boolean record = false;
+		boolean beganSentence = true;
 		for(String x : wordList) {
-			if(x.equals(rootCaption)) {
+			if(x.equals(rootCaption) && beganSentence) {
 				record = true;
 				sentences.add(new ArrayList<String>());
 			}
-			else if(x.equals(".")) record = false;
+			if(settings.isRootMustOpenSentence()) beganSentence = false;
+			if(x.equals(".")) {
+				record = false;
+				beganSentence = true;
+			}
 			if(record) sentences.get(sentences.size()-1).add(x);
 		}
 		root = new GraphNode(rootCaption, rootCaption);
@@ -166,7 +177,10 @@ public class EntryPoint {
 				+ res.getRootCaption() + "\" will be used.");
 		
 		String b = cmd.getOptionValue("b");
-		if(b!=null) res.setRootMustOpenSentence(Boolean.parseBoolean(b));
+		if(b!=null) {
+			res.setRootMustOpenSentence(Boolean.parseBoolean(b));
+			System.out.println("Set beginning to " + Boolean.parseBoolean(b));
+		}
 		
 		String w = cmd.getOptionValue("w");
 		if(w!=null) res.setWordSeperator(w);
