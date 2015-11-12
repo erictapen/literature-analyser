@@ -69,7 +69,6 @@ public class GraphNode {
 		for(GraphNode x : tempchildren) {
 			foundNode = known.get(x.getCaption());
 			if(foundNode!=null) {
-				System.out.println("foundNode");
 				foundNode.addChildren(x.getChildren());
 				this.children.remove(x);
 			} else {
