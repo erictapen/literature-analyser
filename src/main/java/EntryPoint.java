@@ -10,6 +10,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.UnrecognizedOptionException;
 
 
 public class EntryPoint {
@@ -36,8 +37,12 @@ public class EntryPoint {
 				System.exit(0);
 			}
 			settings = generateSettingsFromCmd(cmd);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
+		} catch (UnrecognizedOptionException e) {
+			System.out.println("Wrong command line options usage. "
+					+ "Use -h for a list of available options.");
+			System.exit(0);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		
 		rootCaption = settings.getRootCaption();
