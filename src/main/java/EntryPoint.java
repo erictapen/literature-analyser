@@ -8,6 +8,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.UnrecognizedOptionException;
@@ -168,22 +169,55 @@ public class EntryPoint {
 	 */
 	private static void addCommandLineOptions(Options options) {
 		options.addOption("h", "help", false, "displays this help message and exits.");
-		options.addOption("i", "input-file", true, "the plain text to process");
-		options.addOption("o", "output-file", true, "output-file name. "
+		
+		Option i = new Option("i", "input-file", true, "the plain text to process");
+		i.setArgName("file");
+		options.addOption(i);
+		
+		Option o = new Option("o", "output-file", true, "output-file name. "
 				+ "File extension will be added automatically.");
-		options.addOption("r", "root", true, "this word and the following will be added into the tree.");
-		options.addOption("b", "root-starts-sentence", true, "only sentences starting with root will "
-				+ "be processed.");
-		options.addOption("w", "word-seperator", true, "the symbol, which seperates words. "
-				+ "Default is ' '.");
-		options.addOption("m", "force-punctuation-marks", true, "this will force punctuation marks like"
-				+ "'.',';','`' and ',' to be seperated words, regardless if they are surrounded by "
-				+ "word-seperators or not.");
-		options.addOption("e", "sentence-end", true, "This word ends a sentence. Default is '.'");
-		options.addOption("d", "export-dot", true, "export to *.dot format.");
-		options.addOption("p", "export-plain", true, "export to *.plain format. Only useful for debugging.");
-		options.addOption("s", "export-sentences", true, "export to *.sen format. "
-				+ "Lists every matching sentence.");
+		o.setArgName("file");
+		options.addOption(o);
+		
+		Option r = new Option("r", "root", true, "this word and the following will be added into the tree."
+				+ " Default is \"I\".");
+		r.setArgName("string");
+		options.addOption(r);
+		
+		Option b = new Option("b", "root-starts-sentence", true, "if true, only sentences starting "
+				+ "with root will be processed. Default is true.");
+		b.setArgName("boolean");
+		options.addOption(b);
+		
+		Option w = new Option("w", "word-seperator", true, "the symbol, which seperates words. "
+				+ "Default is \" \".");
+		w.setArgName("string");
+		options.addOption(w);
+		
+		Option m = new Option("m", "force-punctuation-marks", true, "if true, this will force punctuation "
+				+ "marks like '.',';','`' and ',' to be seperated words, regardless if they are "
+				+ "surrounded by word-seperators or not. Default is true.");
+		m.setArgName("boolean");
+		options.addOption(m);
+		
+		Option e = new Option("e", "sentence-end", true, "This word ends a sentence. Default is '.'.");
+		e.setArgName("string");
+		options.addOption(e);
+		
+		Option d = new Option("d", "export-dot", true, "if true, export to *.dot format. Default is true.");
+		d.setArgName("boolean");
+		options.addOption(d);
+		
+		Option p = new Option("p", "export-plain", true, "if true, export to *.plain format. "
+				+ "Default is false.");
+		p.setArgName("boolean");
+		options.addOption(p);
+		
+		Option s = new Option("s", "export-sentences", true, "if true, export to *.sentence format. "
+				+ "Lists every matching sentence. Default is true.");
+		s.setArgName("boolean");
+		options.addOption(s);
+		
 		options.addOption("v", "verbose", false, "");
 	}
 	
