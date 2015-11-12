@@ -78,11 +78,11 @@ public class EntryPoint {
 		getTreeFromWords();
 		System.out.println(wordList.size() + " words in memory.");
 		if(settings.isExportDOT()) 
-			SortedGraphExport.exportFile(root, "out/" + settings.getOutputFile() + ".dot");
+			SortedGraphExport.exportFile(root, settings.getOutputFile() + ".dot");
 		if(settings.isExportPLAIN()) 
-			PlainExport.exportFile(wordList, "out/" + settings.getOutputFile() + ".plain");
+			PlainExport.exportFile(wordList, settings.getOutputFile() + ".plain");
 		if(settings.isExportSENTENCE()) 
-			SentenceExport.exportFile(sentences, "out/" + settings.getOutputFile() + ".sentences");
+			SentenceExport.exportFile(sentences, settings.getOutputFile() + ".sentences");
 	}
 
 	/** This is just for a better overview. All possible punctuation marks are defined here. It is possible,
