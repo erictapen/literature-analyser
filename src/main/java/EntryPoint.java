@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -25,9 +26,15 @@ public class EntryPoint {
 		addPMarks();
 		Options options = new Options();
 		addCommandLineOptions(options);
+		
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine cmd = parser.parse( options, args);
+			if(cmd.hasOption("h")) {
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp( "literature-analyser", options );
+				System.exit(0);
+			}
 			settings = generateSettingsFromCmd(cmd);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
@@ -137,6 +144,7 @@ public class EntryPoint {
 	}
 	
 	private static void addCommandLineOptions(Options options) {
+		options.addOption("h", "help", false, "displays this help message and exits.");
 		options.addOption("i", "input-file", true, "the plain text to process");
 		options.addOption("o", "output-file", true, "output-file name. "
 				+ "File extension will be added automatically.");
