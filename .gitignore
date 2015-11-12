@@ -1,6 +1,8 @@
 *.txt
 *.pdf
 *.dot
-/data/
+*.epub
+*.zip
+!/data/example.txt
 /out/
 /target/
