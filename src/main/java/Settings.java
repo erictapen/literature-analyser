@@ -6,6 +6,7 @@ public class Settings {
 	private boolean rootMustOpenSentence = true;
 	private String wordSeperator = " ";
 	private boolean forcePunctuationMarks = true;
+	private String sentenceEnder = ".";
 	private boolean exportDOT = true;
 	private boolean exportPLAIN = false;
 	private boolean exportSENTENCE = true;
@@ -92,6 +93,14 @@ public class Settings {
 
 	public void setVerbose(boolean verbose) {
 		this.verbose = verbose;
+	}
+
+	public String getSentenceEnder() {
+		return sentenceEnder;
+	}
+
+	public void setSentenceEnder(String sentenceEnder) {
+		this.sentenceEnder = sentenceEnder;
 	}
 	
 	

@@ -116,7 +116,7 @@ public class EntryPoint {
 				sentences.add(new ArrayList<String>());
 			}
 			if(settings.isRootMustOpenSentence()) beganSentence = false;
-			if(x.equals(".")) {
+			if(x.equals(settings.getSentenceEnder())) {
 				record = false;
 				beganSentence = true;
 			}
@@ -148,6 +148,7 @@ public class EntryPoint {
 		options.addOption("m", "force-punctuation-marks", true, "this will force punctuation marks like"
 				+ "'.',';','`' and ',' to be seperated words, regardless if they are surrounded by "
 				+ "word-seperators or not.");
+		options.addOption("e", "sentence-end", true, "This word ends a sentence. Default is '.'");
 		options.addOption("d", "export-dot", true, "export to *.dot format.");
 		options.addOption("p", "export-plain", true, "export to *.plain format. Only useful for debugging.");
 		options.addOption("s", "export-sentences", true, "export to *.sen format. "
@@ -187,6 +188,9 @@ public class EntryPoint {
 		
 		String m = cmd.getOptionValue("m");
 		if(m!=null) res.setForcePunctuationMarks(Boolean.parseBoolean(m));
+		
+		String e = cmd.getOptionValue("e");
+		if(e!=null) res.setSentenceEnder(e);
 		
 		String d = cmd.getOptionValue("d");
 		if(d!=null) res.setExportDOT(Boolean.parseBoolean(d));
