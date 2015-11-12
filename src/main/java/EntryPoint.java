@@ -18,12 +18,12 @@ public class EntryPoint {
 	private static ArrayList<String> wordList = new ArrayList<String>();
 	private static ArrayList<ArrayList<String>> sentences;
 	private static GraphNode root;
+	private static Settings settings = null;
 
 	public static void main(String[] args) {
 		Options options = new Options();
 		addCommandLineOptions(options);
 		CommandLineParser parser = new DefaultParser();
-		Settings settings = null;
 		try {
 			CommandLine cmd = parser.parse( options, args);
 			settings = generateSettingsFromCmd(cmd);
@@ -31,12 +31,11 @@ public class EntryPoint {
 			e1.printStackTrace();
 		}
 		
-		
-		rootCaption = args[1];
+		rootCaption = settings.getRootCaption();
 		try {
-			importFile(args[0]);
+			importFile(settings.getInputFile());
 		} catch (FileNotFoundException e) {
-			System.out.println("File \"" + args[0] + "\" not found. Abort.");
+			System.out.println("File \"" + settings.getInputFile() + "\" not found. Abort.");
 			e.printStackTrace();
 			return;
 		} catch (IOException e) {
@@ -46,10 +45,12 @@ public class EntryPoint {
 		}
 		getTreeFromWords();
 		System.out.println(wordList.size() + " words in memory.");
-		SortedGraphExport.exportFile(root, "out/test.dot");
-		PlainExport.exportFile(wordList, "out/test.plain");
-		SentenceExport.exportFile(sentences, "out/test.sen");
-
+		if(settings.isExportDOT()) 
+			SortedGraphExport.exportFile(root, "out/" + settings.getOutputFile() + ".dot");
+		if(settings.isExportPLAIN()) 
+			PlainExport.exportFile(wordList, "out/" + settings.getOutputFile() + ".plain");
+		if(settings.isExportSENTENCE()) 
+			SentenceExport.exportFile(sentences, "out/" + settings.getOutputFile() + ".sentences");
 	}
 
 	public static void importFile(String infile) throws FileNotFoundException, IOException {
@@ -84,7 +85,7 @@ public class EntryPoint {
 				word = "";
 				words.add(line.substring(i, i+1));
 				i++;				
-			} else if (line.startsWith(" ", i)) {
+			} else if (line.startsWith(settings.getWordSeperator(), i)) {
 				words.add(word);
 				word = "";
 				i++;
@@ -133,23 +134,55 @@ public class EntryPoint {
 				+ "be processed.");
 		options.addOption("w", "word-seperator", true, "the symbol, which seperates words. "
 				+ "Default is ' '.");
+		options.addOption("m", "force-punctuation-marks", true, "this will force punctuation marks like"
+				+ "'.',';','`' and ',' to be seperated words, regardless if they are surrounded by "
+				+ "word-seperators or not.");
 		options.addOption("d", "export-dot", true, "export to *.dot format.");
 		options.addOption("p", "export-plain", true, "export to *.plain format. Only useful for debugging.");
 		options.addOption("s", "export-sentences", true, "export to *.sen format. "
 				+ "Lists every matching sentence.");
-		options.addOption("m", "force-punctuation-marks", true, "this will force punctuation marks like"
-				+ "'.',';','`' and ',' to be seperated words, regardless if they are surrounded by "
-				+ "word-seperators or not.");
 	}
 	
 	private static Settings generateSettingsFromCmd(CommandLine cmd) {
 		Settings res = new Settings();
 		String i = cmd.getOptionValue("i");
 		if(i!=null) res.setInputFile(i);
-		else System.out.println("Please ...")
-		//TODO abort and so on
+		else {
+			System.out.println("Please specify an input file. Abort.");
+			System.exit(0);
+		}
 		
-		return null;
+		String o = cmd.getOptionValue("o");
+		if(o!=null) res.setOutputFile(o);
+		else {
+			System.out.println("Please specify an output file. Abort.");
+			System.exit(0);
+		}
+		
+		String r = cmd.getOptionValue("r");
+		if(r!=null) res.setRootCaption(r);
+		else System.out.println("Warning! No root caption was set. Default value \"" 
+				+ res.getRootCaption() + "\" will be used.");
+		
+		String b = cmd.getOptionValue("b");
+		if(b!=null) res.setRootMustOpenSentence(Boolean.parseBoolean(b));
+		
+		String w = cmd.getOptionValue("w");
+		if(w!=null) res.setWordSeperator(w);
+		
+		String m = cmd.getOptionValue("m");
+		if(m!=null) res.setForcePunctuationMarks(Boolean.parseBoolean(m));
+		
+		String d = cmd.getOptionValue("d");
+		if(d!=null) res.setExportDOT(Boolean.parseBoolean(d));
+		
+		String p = cmd.getOptionValue("p");
+		if(p!=null) res.setExportPLAIN(Boolean.parseBoolean(p));
+		
+		String s = cmd.getOptionValue("s");
+		if(s!=null) res.setExportSENTENCE(Boolean.parseBoolean(s));
+				
+		return res;
 	}
 
 }
