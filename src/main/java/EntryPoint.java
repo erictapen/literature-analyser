@@ -141,6 +141,7 @@ public class EntryPoint {
 		options.addOption("p", "export-plain", true, "export to *.plain format. Only useful for debugging.");
 		options.addOption("s", "export-sentences", true, "export to *.sen format. "
 				+ "Lists every matching sentence.");
+		options.addOption("v", "verbose", false, "");
 	}
 	
 	private static Settings generateSettingsFromCmd(CommandLine cmd) {
@@ -181,6 +182,8 @@ public class EntryPoint {
 		
 		String s = cmd.getOptionValue("s");
 		if(s!=null) res.setExportSENTENCE(Boolean.parseBoolean(s));
+		
+		if(cmd.hasOption("v")) res.setVerbose(true);
 				
 		return res;
 	}

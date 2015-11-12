@@ -9,6 +9,7 @@ public class Settings {
 	private boolean exportDOT = true;
 	private boolean exportPLAIN = false;
 	private boolean exportSENTENCE = true;
+	private boolean verbose = false;
 	
 	public Settings() {
 	}
@@ -83,6 +84,14 @@ public class Settings {
 
 	public void setForcePunctuationMarks(boolean forcePunctuationMarks) {
 		this.forcePunctuationMarks = forcePunctuationMarks;
+	}
+
+	public boolean isVerbose() {
+		return verbose;
+	}
+
+	public void setVerbose(boolean verbose) {
+		this.verbose = verbose;
 	}
 	
 	
