@@ -180,7 +180,6 @@ public class EntryPoint {
 		String b = cmd.getOptionValue("b");
 		if(b!=null) {
 			res.setRootMustOpenSentence(Boolean.parseBoolean(b));
-			System.out.println("Set beginning to " + Boolean.parseBoolean(b));
 		}
 		
 		String w = cmd.getOptionValue("w");
