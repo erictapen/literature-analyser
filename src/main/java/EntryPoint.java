@@ -15,8 +15,7 @@ import org.apache.commons.cli.UnrecognizedOptionException;
 
 public class EntryPoint {
 	
-	private static String rootCaption = "I";
-	
+	private static String rootCaption;
 	private static ArrayList<String> wordList = new ArrayList<String>();
 	private static ArrayList<ArrayList<String>> sentences;
 	private static GraphNode root;
@@ -67,6 +66,11 @@ public class EntryPoint {
 			SentenceExport.exportFile(sentences, "out/" + settings.getOutputFile() + ".sentences");
 	}
 
+	/** This is just for a better overview. All possible punctuation marks are defined here. It is possible,
+	 * that I forgot some special unicode characters, that someone may need. In this case, please add them
+	 * via PullRequest.
+	 * 
+	 */
 	private static void addPMarks() {
 		pmarks.add("'");
 		pmarks.add("’");
@@ -80,6 +84,11 @@ public class EntryPoint {
 		pmarks.add(")");		
 	}
 
+	/** Import a text file
+	 * @param infile
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public static void importFile(String infile) throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(infile))) {
 			String line;
@@ -92,6 +101,9 @@ public class EntryPoint {
 		}
 	}
 
+	/** This detects words in a passed line of text.
+	 * @param line
+	 */
 	private static void getWordsFromLine(String line) {
 		if(settings.isVerbose()) System.out.println(line.length());
 		ArrayList<String> words = new ArrayList<String>();
@@ -117,6 +129,9 @@ public class EntryPoint {
 		if(settings.isVerbose()) System.out.println(words);
 	}
 	
+	/** This turns the list of all detected words into the tree we need.
+	 * 
+	 */
 	private static void getTreeFromWords() {
 		System.out.println("Building tree. WordList has " + wordList.size() + " entries.");
 		sentences = new ArrayList<ArrayList<String>>();
@@ -148,6 +163,9 @@ public class EntryPoint {
 		System.out.println("Tree builded. Root has " + root.getChildren().size() + " children.");
 	}
 	
+	/** All possible command line options are defined in a seperate function.
+	 * @param options
+	 */
 	private static void addCommandLineOptions(Options options) {
 		options.addOption("h", "help", false, "displays this help message and exits.");
 		options.addOption("i", "input-file", true, "the plain text to process");
@@ -169,6 +187,11 @@ public class EntryPoint {
 		options.addOption("v", "verbose", false, "");
 	}
 	
+	/** Gets an instance of CommandLine and produces a Settings object out of it. The settings object
+	 * holds all the information, the program instance needs.
+	 * @param cmd
+	 * @return
+	 */
 	private static Settings generateSettingsFromCmd(CommandLine cmd) {
 		Settings res = new Settings();
 		String i = cmd.getOptionValue("i");
