@@ -51,7 +51,7 @@ public class EntryPoint {
 			CommandLine cmd = parser.parse( options, args);
 			if(cmd.hasOption("h")) {
 				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp( "literature-analyser", options );
+				formatter.printHelp( "literature-analyser [OPTION]...", options );
 				System.exit(0);
 			}
 			settings = generateSettingsFromCmd(cmd);
